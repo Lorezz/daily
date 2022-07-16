@@ -30,6 +30,7 @@ async function main() {
 
   const withscores = await redis.zrange("user-zset", 2, 3, "WITHSCORES");
   console.log("withscores", withscores); // [ 'Alex', '99.5', 'Tom', '100' ]
+
   //console.log(await redis.zrange("user-zset", 2, 3, "REV")); // [ 'Bob', 'Jeff' ]
 
   // const byscore = await redis.zrange("user-zset", 2, 3, "BYSCORE")
@@ -44,7 +45,13 @@ async function getAll(type) {
   }
   const all = await redis.zrange(type, 0, -1)
   console.log("all", all);
-  return all
+
+  const parsed = all.map(i => JSON.parse(i))
+
+  // const withscores = await redis.zrange(type, 0, -1, "WITHSCORES");
+  // console.log("withscores", withscores)
+
+  return parsed
 }
 
 function add(type, events) {

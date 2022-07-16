@@ -26,16 +26,18 @@ export default function Calendar({ eventList }) {
   const daysInMonth = dayjs().daysInMonth();
   //last day of moth
   const lastDayOfMonth = dayjs().date(daysInMonth);
-  const dayOfWeekOfLastDay = dayjs(firstDayOfMonth.format()).day();
+  const dayOfWeekOfLastDay = dayjs(lastDayOfMonth.format()).day();
 
   const fmt = 'YYYY-MM-DD';
 
   const prev = [];
-  for (let i = dayOfWeekOfFirstDay - 1; i > 0; i--) {
-    prev.push({
-      date: firstDayOfMonth.subtract(i, 'day').format(fmt),
-      events: [],
-    });
+  if (dayOfWeekOfFirstDay != 1) {
+    for (let i = dayOfWeekOfFirstDay - 1; i > 0; i--) {
+      prev.push({
+        date: firstDayOfMonth.subtract(i, 'day').format(fmt),
+        events: [],
+      });
+    }
   }
   const daysOfMonth = [];
   for (let i = 1; i <= daysInMonth; i++) {
@@ -52,10 +54,11 @@ export default function Calendar({ eventList }) {
     daysOfMonth.push(obj);
   }
   const after = [];
-  for (let i = dayOfWeekOfLastDay; i < 8; i++) {
-    after.push({ date: lastDayOfMonth.add(i, 'day').format(fmt), events: [] });
+  if (dayOfWeekOfLastDay !== 0) {
+    for (let i = dayOfWeekOfLastDay; i < 7; i++) {
+      after.push({ date: lastDayOfMonth.add(i, 'day').format(fmt), events: [] });
+    }
   }
-
   const days = [...prev, ...daysOfMonth, ...after];
   // console.log('days', days);
   const selectedDay = days.find((day) => day.isSelected);
