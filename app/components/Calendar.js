@@ -28,7 +28,7 @@ export default function Calendar({ eventList }) {
 
   const selectedDayEvents = useMemo(() => {
     return selectedDay ? eventsOf(selectedDay.date) : [];
-  }, selectedDay);
+  }, [selectedDay]);
 
   console.log('selectedDay', selectedDay);
   return (
@@ -64,7 +64,6 @@ export default function Calendar({ eventList }) {
               const dayEvents = eventsOf(day.date);
               return (
                 <div
-                  onClick={() => alert('selcetd')}
                   key={day.date}
                   className={classNames(
                     day.isCurrentMonth
@@ -74,12 +73,15 @@ export default function Calendar({ eventList }) {
                   )}
                 >
                   <time
+                    onClick={() => setSelectedDay(day)}
                     dateTime={day.date}
-                    className={
-                      day.isToday
-                        ? 'flex h-6 w-6 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white'
-                        : ''
-                    }
+                    className={classNames(
+                      'flex h-6 w-6 items-center justify-center rounded-full',
+                      day.isToday && 'bg-indigo-600  font-semibold text-white',
+                      isSelected(day) &&
+                        !day.isToday &&
+                        'bg-gray-900  font-semibold text-white'
+                    )}
                   >
                     {day.date.split('-').pop().replace(/^0/, '')}
                   </time>
