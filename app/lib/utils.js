@@ -2,6 +2,10 @@ import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 dayjs.extend(isToday);
 
+export function isSameDay(date1, date2) {
+  return dayjs(date1).isSame(date2, 'day');
+}
+
 export function getDays(monthDate = new Date()) {
   //first day of month
   const firstDayOfMonth = dayjs(monthDate).date(1);
